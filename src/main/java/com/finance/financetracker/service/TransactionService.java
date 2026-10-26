@@ -2,6 +2,7 @@ package com.finance.financetracker.service;
 
 import com.finance.financetracker.dto.TransactionRequestDto;
 import com.finance.financetracker.dto.TransactionResponseDto;
+import com.finance.financetracker.dto.UpdateTransactionRequestDto;
 import com.finance.financetracker.exception.TransactionAlreadyExistsException;
 import com.finance.financetracker.exception.TransactionNotExistsException;
 import com.finance.financetracker.model.Transaction;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,12 +72,33 @@ public class TransactionService {
     }
 
     //update transaction
-//    public String updateTransaction(Long id){
+    public String updateTransaction(Long id, UpdateTransactionRequestDto updateTransactionRequestDto){
 
-//      Transaction tr = transactionRespository.findById(id).orElseThrow(() -> new TransactionNotExistsException("No Transaction exists by this Id!")){
-//
-//      }
-//    }
+      Transaction tr = transactionRespository.findById(id).orElseThrow(() -> new TransactionNotExistsException("No Transaction exists by this Id!"));
+
+          if(updateTransactionRequestDto.getTitle() != null){
+              tr.setTitle(updateTransactionRequestDto.getTitle());
+          }
+          if(updateTransactionRequestDto.getCategory() != null){
+              tr.setCategory(updateTransactionRequestDto.getCategory());
+          }
+          if(updateTransactionRequestDto.getDescription() != null){
+              tr.setDescription(updateTransactionRequestDto.getDescription());
+          }
+          if(updateTransactionRequestDto.getType().toString() != null){
+              tr.setType(updateTransactionRequestDto.getType());
+          }
+          if(updateTransactionRequestDto.getTransactionDate() != null){
+              tr.setTransactionDate(updateTransactionRequestDto.getTransactionDate());
+          }
+          if(updateTransactionRequestDto.getAmount() != null){
+              tr.setAmount(updateTransactionRequestDto.getAmount());
+          }
+
+          Transaction uptr = transactionRespository.save(tr);
+          return "Transaction with id " + uptr.getId() + " has been updated successfully";
+
+    }
 
     //delete transaction
     public String deleteTransaction(Long id){
@@ -85,7 +106,5 @@ public class TransactionService {
         transactionRespository.deleteById(id);
         return "Transaction has been deleted";
     }
-
-
 
 }

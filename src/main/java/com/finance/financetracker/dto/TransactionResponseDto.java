@@ -25,8 +25,8 @@ public class TransactionResponseDto {
     @JsonProperty("Transaction_Category")
     private String category;
     @JsonProperty("Transaction_Date")
-    private LocalDate TransactionDate;
+    private LocalDate transactionDate;
     @JsonProperty("Transaction_Description")
-    private String Description;
+    private String description;
 
 }
