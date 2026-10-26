@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRespository extends JpaRepository<Transaction,Long> {
 
-    Boolean existsByTitleContainingIgnoreCase(String title);
+    Boolean existsByTitleIgnoreCase(String title);
 
 }

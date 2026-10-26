@@ -27,7 +27,7 @@ public class Transaction {
 
     private BigDecimal amount;
     private String category;
-    private LocalDate TransactionDate;
-    private String Description;
+    private LocalDate transactionDate;
+    private String description;
 
 }

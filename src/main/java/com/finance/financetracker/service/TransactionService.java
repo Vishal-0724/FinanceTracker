@@ -32,7 +32,7 @@ public class TransactionService {
     //add/create transaction
     public String createTransaction(TransactionRequestDto transactionRequestDto){
 
-        if(transactionRespository.existsByTitleContainingIgnoreCase(transactionRequestDto.getTitle())){
+        if(transactionRespository.existsByTitleIgnoreCase(transactionRequestDto.getTitle())){
             throw new TransactionAlreadyExistsException("Transaction already exists");
         }
 
@@ -58,7 +58,7 @@ public class TransactionService {
     public Page<TransactionResponseDto> getAllTransaction(Integer size,Integer page,String direction,String sortBy) {
 
         //list of sortBy(actual elements/fields in the table)
-        List<String> allowedFields = List.of("id","title","amount","category","Description","type","TransactionDate");
+        List<String> allowedFields = List.of("id","title","amount","category","description","type","transactionDate");
         if(!allowedFields.contains(sortBy)){
             throw new IllegalArgumentException("Field not available!");
         }

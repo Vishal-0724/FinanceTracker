@@ -3,11 +3,13 @@ package com.finance.financetracker.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.finance.financetracker.model.transactionType;;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionResponseDto {
