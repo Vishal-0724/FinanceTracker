@@ -2,8 +2,9 @@ package com.finance.financetracker.controller;
 
 import com.finance.financetracker.dto.TransactionRequestDto;
 import com.finance.financetracker.dto.UpdateTransactionRequestDto;
+import com.finance.financetracker.model.transactionType;
 import com.finance.financetracker.service.TransactionService;
-import jakarta.validation.Valid;;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,14 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.sumAmount());
     }
 
+    @GetMapping("/totalincomebytype")
+    public ResponseEntity<?> totalIncome(@RequestParam transactionType type){
+        return ResponseEntity.ok(transactionService.sumAmountByType(type));
+    }
+
+    @GetMapping("/balance")
+    public ResponseEntity<?> balance(){
+        return ResponseEntity.ok(transactionService.balanceAmount());
+    }
 
 }

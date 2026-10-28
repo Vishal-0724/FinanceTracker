@@ -6,7 +6,8 @@ import com.finance.financetracker.dto.UpdateTransactionRequestDto;
 import com.finance.financetracker.exception.TransactionAlreadyExistsException;
 import com.finance.financetracker.exception.TransactionNotExistsException;
 import com.finance.financetracker.model.Transaction;
-import com.finance.financetracker.repository.TransactionRespository;
+import com.finance.financetracker.model.transactionType;
+import com.finance.financetracker.repository.TransactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,9 @@ import java.util.List;
 @Service
 public class TransactionService {
 
-    private final TransactionRespository transactionRespository;
+    private final TransactionRepository transactionRespository;
 
-    public TransactionService(TransactionRespository transactionRespository) {
+    public TransactionService(TransactionRepository transactionRespository) {
         this.transactionRespository = transactionRespository;
     }
 
@@ -75,29 +76,33 @@ public class TransactionService {
     //update transaction
     public String updateTransaction(Long id, UpdateTransactionRequestDto updateTransactionRequestDto){
 
-      Transaction tr = transactionRespository.findById(id).orElseThrow(() -> new TransactionNotExistsException("No Transaction exists by this Id!"));
+        if(transactionRespository.existsByTitleIgnoreCaseAndIdNot(updateTransactionRequestDto.getTitle(),id)){
+            throw new TransactionAlreadyExistsException("Title exists already!");
+        }
 
-          if(updateTransactionRequestDto.getTitle() != null){
-              tr.setTitle(updateTransactionRequestDto.getTitle());
-          }
-          if(updateTransactionRequestDto.getCategory() != null){
-              tr.setCategory(updateTransactionRequestDto.getCategory());
-          }
-          if(updateTransactionRequestDto.getDescription() != null){
-              tr.setDescription(updateTransactionRequestDto.getDescription());
-          }
-          if(updateTransactionRequestDto.getType() != null){
-              tr.setType(updateTransactionRequestDto.getType());
-          }
-          if(updateTransactionRequestDto.getTransactionDate() != null){
-              tr.setTransactionDate(updateTransactionRequestDto.getTransactionDate());
-          }
-          if(updateTransactionRequestDto.getAmount() != null){
-              tr.setAmount(updateTransactionRequestDto.getAmount());
-          }
+        Transaction tr = transactionRespository.findById(id).orElseThrow(() -> new TransactionNotExistsException("No Transaction exists by this Id!"));
 
-          Transaction uptr = transactionRespository.save(tr);
-          return "Transaction with id " + uptr.getId() + " has been updated successfully";
+        if(updateTransactionRequestDto.getTitle() != null){
+            tr.setTitle(updateTransactionRequestDto.getTitle());
+        }
+        if(updateTransactionRequestDto.getCategory() != null){
+            tr.setCategory(updateTransactionRequestDto.getCategory());
+        }
+        if(updateTransactionRequestDto.getDescription() != null){
+            tr.setDescription(updateTransactionRequestDto.getDescription());
+        }
+        if(updateTransactionRequestDto.getType() != null){
+            tr.setType(updateTransactionRequestDto.getType());
+        }
+        if(updateTransactionRequestDto.getTransactionDate() != null){
+            tr.setTransactionDate(updateTransactionRequestDto.getTransactionDate());
+        }
+        if(updateTransactionRequestDto.getAmount() != null){
+            tr.setAmount(updateTransactionRequestDto.getAmount());
+        }
+
+        Transaction uptr = transactionRespository.save(tr);
+        return "Transaction with id " + uptr.getId() + " has been updated successfully";
 
     }
 
@@ -108,9 +113,25 @@ public class TransactionService {
         return "Transaction has been deleted";
     }
 
-    //test query sum
+    //total amount
     public BigDecimal sumAmount(){
-        return transactionRespository.findTotalAmount();
+        BigDecimal total = transactionRespository.findTotalAmount();
+        return total;
     }
+
+    //amount by type(income,expense)
+    public BigDecimal sumAmountByType(transactionType type){
+        BigDecimal totalin = transactionRespository.findTotalAmountByType(type);
+        return totalin;
+    }
+
+    //balance
+    public BigDecimal balanceAmount(){
+        BigDecimal income= transactionRespository.findTotalAmountByType(transactionType.INCOME);
+        BigDecimal expense =  transactionRespository.findTotalAmountByType(transactionType.EXPENSE);
+        return income.subtract(expense);//bigdecimal is immutable so sum1.subtract(sum2)
+    }
+
+
 
 }

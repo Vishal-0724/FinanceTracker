@@ -15,7 +15,7 @@ public class UpdateTransactionRequestDto {
 
     private transactionType type;
     private String title;
-    @DecimalMin(value ="0.01",message = "amount should be greater than 0.01")
+    @DecimalMin(value ="0.01",message = "Amount must be at least 0.01")
     private BigDecimal amount;
     private String category;
     private LocalDate transactionDate;

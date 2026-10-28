@@ -20,7 +20,7 @@ public class TransactionRequestDto {
     private transactionType type;
     @NotBlank(message = "Title should not be blank")
     private String title;
-    @DecimalMin(value ="0.01",message = "amount should be greater than 0.01")
+    @DecimalMin(value ="0.01",message = "Amount must be at least 0.01")
     @NotNull(message = "Amount should not be blank")
     private BigDecimal amount;
     @NotBlank(message = "Category should not be blank")
