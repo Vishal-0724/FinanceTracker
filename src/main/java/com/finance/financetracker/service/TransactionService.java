@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -85,7 +86,7 @@ public class TransactionService {
           if(updateTransactionRequestDto.getDescription() != null){
               tr.setDescription(updateTransactionRequestDto.getDescription());
           }
-          if(updateTransactionRequestDto.getType().toString() != null){
+          if(updateTransactionRequestDto.getType() != null){
               tr.setType(updateTransactionRequestDto.getType());
           }
           if(updateTransactionRequestDto.getTransactionDate() != null){
@@ -105,6 +106,11 @@ public class TransactionService {
         Transaction tr = transactionRespository.findById(id).orElseThrow(() -> new TransactionNotExistsException("No Transaction exists by this Id!"));
         transactionRespository.deleteById(id);
         return "Transaction has been deleted";
+    }
+
+    //test query sum
+    public BigDecimal sumAmount(){
+        return transactionRespository.findTotalAmount();
     }
 
 }

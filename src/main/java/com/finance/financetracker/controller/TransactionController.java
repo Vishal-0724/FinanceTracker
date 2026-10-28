@@ -38,7 +38,7 @@ public class TransactionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateTransaction(@PathVariable Long id, @RequestBody UpdateTransactionRequestDto updateTransactionRequestDto){
+    public ResponseEntity<?> updateTransaction(@PathVariable Long id,@RequestBody @Valid UpdateTransactionRequestDto updateTransactionRequestDto){
         return ResponseEntity.ok(transactionService.updateTransaction(id,updateTransactionRequestDto));
     }
 
@@ -46,5 +46,11 @@ public class TransactionController {
     public ResponseEntity<?> deleteTransactions(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.deleteTransaction(id));
     }
+
+    @GetMapping("/sum")
+    public ResponseEntity<?> sumAmount(){
+        return ResponseEntity.ok(transactionService.sumAmount());
+    }
+
 
 }
